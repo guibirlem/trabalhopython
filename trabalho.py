@@ -7,6 +7,7 @@ contas = {}
 
 #mudança feita 
 #mudança feita novamente 341212313231212
+# mudança feita 00 14 horario
 def cadastrar_usuario(nome, cpf):
     if cpf in usuarios:
         print("Usuário já cadastrado.")
