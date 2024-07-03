@@ -3,11 +3,36 @@ usuarios = {}
 
 # Dicionário para armazenar contas correntes
 contas = {}
+#adicionado menu em 03 07 10 horas
+while True:
+    print('\nMenu Principal')
+    print('1. Criar Conta')
+    print('2. Depositar')
+    print('3. Sacar')
+    print('4. Consultar Saldo')
+    print('5. Sair')
+    
+    opcao = int(input('Escolha uma opção: '))
+    
+    if opcao == 1:
+        print("Opção Criar Conta selecionada.")
+        pass  
+    elif opcao == 2:
+        print("Opção Depositar selecionada.")
+        pass 
+    elif opcao == 3:
+        print("Opção Sacar selecionada.")
+        pass 
+    elif opcao == 4:
+        print("Opção Consultar Saldo selecionada.")
+        pass  
+    elif opcao == 5:
+        print("Saindo...")
+        break  
+    else:
+        print("Opção inválida. Tente novamente.")
 
 
-#mudança feita 
-#mudança feita novamente 341212313231212
-# mudança feita 00 14 horario
 def cadastrar_usuario(nome, cpf):
     if cpf in usuarios:
         print("Usuário já cadastrado.")
