@@ -1,9 +1,20 @@
+import os
+
+# Utilitarios
+def aguarde_usuario():
+    print("\nAperte qualquer tecla para continuar...")
+    input("")
+
+def limpar_tela():
+    os.system("clear") or None
+
 # Dicionários para armazenar usuários e contas correntes
 usuarios = {}
 contas = {}
 
 def menu_principal():
     while True:
+        limpar_tela()
         print(r""" 
           ▐▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▌
           ▐                                                                              ▌
@@ -41,6 +52,7 @@ def menu_principal():
 
 def menu_usuario(cpf):
     while True:
+        limpar_tela()
         print(r"""
               ╔══════════════════════════════════════════════════════════════════════════════╗
               ║                                                                              ║
@@ -69,20 +81,28 @@ def menu_usuario(cpf):
 
         if opcao == 1:
             depositar(cpf)
+            aguarde_usuario()
         elif opcao == 2:
             sacar(cpf)
+            aguarde_usuario()
         elif opcao == 3:
             consultar_saldo(cpf)
+            aguarde_usuario()
         elif opcao == 4:
             transferir(cpf)
+            aguarde_usuario()
         elif opcao == 5:
             gerar_extrato(cpf)
+            aguarde_usuario()
         elif opcao == 6:
             editar_usuario(cpf)
+            aguarde_usuario()
         elif opcao == 7:
             fechar_conta(cpf)
+            aguarde_usuario()
         elif opcao == 8:
             excluir_usuario(cpf)
+            aguarde_usuario()
             break
         elif opcao == 9:
             break
@@ -180,3 +200,5 @@ def excluir_usuario(cpf):
 
 # Inicializa o menu principal
 menu_principal()
+
+
