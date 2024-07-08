@@ -1,12 +1,17 @@
 import os
 
+
 # Utilitarios
 def aguarde_usuario(): #Função para colocar um "break" entre as escolhar do usuarios
     print("\nAperte qualquer tecla para continuar...")
     input("")
+    limpar_tela() #Adicionei a função de limpar o console, dentro da função de aguarde usuario...Para ficar limpando sempre o console...
 
-def limpar_tela(): #Função para limpar o console após cada escolha do usuario.
-    os.system("clear") or None
+def limpar_tela(): #Função para limpar o console  - comando correto (cls para Windows e clear para outros sistemas).
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        os.system("clear")
 
 # Dicionários para armazenar usuários e contas correntes
 usuarios = {}
@@ -14,8 +19,8 @@ contas = {}
 
 #Menu de cadastro dos usuarios
 def menu_principal():
+    limpar_tela()
     while True:
-        limpar_tela()
         print(r""" 
           ▐▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▌
           ▐                                                                              ▌
@@ -37,23 +42,29 @@ def menu_principal():
             continue
 
         if opcao == 1:
-            cadastrar_usuario() #Função para cadastrar o  usuario, encontrada na linha 112
+            cadastrar_usuario() #Função para cadastrar o  usuario, encontrada na linha 125
+            aguarde_usuario()
         elif opcao == 2:
             cpf = input("Digite o CPF do usuário: ").strip()
             if cpf in usuarios:
                 menu_usuario(cpf) #Quando encontrado o cadastro do usuario, roda a função da segunda parte do menu.
+                aguarde_usuario()
             else:
                 print("Usuário não encontrado.")
+                aguarde_usuario()
         elif opcao == 3:
             print("Saindo...")
+            aguarde_usuario()
             break
         else:
             print("Opção inválida. Tente novamente.")
+            aguarde_usuario()
+
 
 #Segundo menu de seleção de cada função, apos confirmar o CPF de cadastro
 def menu_usuario(cpf):
+    limpar_tela()
     while True:
-        limpar_tela()
         print(r"""
               ╔══════════════════════════════════════════════════════════════════════════════╗
               ║                                                                              ║
@@ -118,7 +129,9 @@ def menu_usuario(cpf):
         else:
             print("Opção inválida. Tente novamente.")
 
-def cadastrar_usuario(nome, cpf):
+def cadastrar_usuario():
+    nome = input("Digite o nome: ").strip()
+    cpf = input("Digite o CPF: ").strip()
     if cpf in usuarios:
         print("Usuário já cadastrado.")
     else:
@@ -126,24 +139,37 @@ def cadastrar_usuario(nome, cpf):
         contas[cpf] = {"saldo": 0.0, "extrato": []}
         print(f"Usuário {nome} cadastrado com sucesso.")
 
-def depositar(cpf, valor):
+def depositar(cpf):
+    valor = float(input("Digite o valor do depósito: "))
     if cpf in contas:
         contas[cpf]["saldo"] += valor
         contas[cpf]["extrato"].append(f"Depósito: +R${valor:.2f}")
+        print(f"Depósito de R${valor:.2f} realizado com sucesso.")
     else:
         print("Usuário não encontrado.")
 
-def sacar(cpf, valor):
+def sacar(cpf):
+    valor = float(input("Digite o valor do saque: "))
     if cpf in contas:
         if valor > contas[cpf]["saldo"]:
             print("Saldo insuficiente.")
         else:
             contas[cpf]["saldo"] -= valor
             contas[cpf]["extrato"].append(f"Saque: -R${valor:.2f}")
+            print(f"Saque de R${valor:.2f} realizado com sucesso.")
     else:
         print("Usuário não encontrado.")
 
-def transferir(cpf_origem, cpf_destino, valor):
+def consultar_saldo(cpf):
+    if cpf in contas:
+        saldo = contas[cpf]["saldo"]
+        print(f"Saldo atual de {usuarios[cpf]['nome']}: R${saldo:.2f}")
+    else:
+        print("Usuário não encontrado.")
+
+def transferir(cpf_origem):
+    cpf_destino = input("Digite o CPF do destinatário: ").strip()
+    valor = float(input("Digite o valor da transferência: "))
     if cpf_origem in contas and cpf_destino in contas:
         if valor > contas[cpf_origem]["saldo"]:
             print("Saldo insuficiente para transferência.")
@@ -152,6 +178,7 @@ def transferir(cpf_origem, cpf_destino, valor):
             contas[cpf_destino]["saldo"] += valor
             contas[cpf_origem]["extrato"].append(f"Transferência enviada: -R${valor:.2f} para {usuarios[cpf_destino]['nome']}")
             contas[cpf_destino]["extrato"].append(f"Transferência recebida: +R${valor:.2f} de {usuarios[cpf_origem]['nome']}")
+            print(f"Transferência de R${valor:.2f} realizada com sucesso.")
     else:
         print("Usuário de origem ou destino não encontrado.")
 
